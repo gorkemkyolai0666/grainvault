@@ -1,0 +1,162 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  admin
+  operator
+  quality_inspector
+  accountant
+}
+
+enum GrainType {
+  wheat
+  barley
+  corn
+  sunflower
+  rye
+  oats
+  other
+}
+
+enum SiloStatus {
+  active
+  maintenance
+  full
+  empty
+  fumigation
+}
+
+enum GrainGrade {
+  grade_a
+  grade_b
+  grade_c
+  feed
+}
+
+enum DispatchStatus {
+  scheduled
+  loading
+  in_transit
+  delivered
+  cancelled
+}
+
+enum ContractStatus {
+  draft
+  active
+  fulfilled
+  expired
+  cancelled
+}
+
+enum MaintenanceType {
+  fumigation
+  cleaning
+  aeration
+  inspection
+  repair
+}
+
+enum MaintenanceStatus {
+  scheduled
+  in_progress
+  completed
+  cancelled
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  name      String
+  role      UserRole @default(operator)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Silo {
+  id               String     @id @default(uuid())
+  name             String
+  grainType        GrainType  @default(wheat)
+  capacityTons     Float
+  currentLevelTons Float      @default(0)
+  moisturePct      Float      @default(0)
+  status           SiloStatus @default(active)
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
+
+  intakes      Intake[]
+  dispatches   Dispatch[]
+  qualityTests QualityTest[]
+  maintenance  Maintenance[]
+}
+
+model Intake {
+  id            String     @id @default(uuid())
+  truckPlate    String
+  farmerName    String
+  netWeightTons Float
+  grade         GrainGrade @default(grade_a)
+  siloId        String
+  silo          Silo       @relation(fields: [siloId], references: [id])
+  receivedAt    DateTime
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+}
+
+model Dispatch {
+  id            String         @id @default(uuid())
+  destination   String
+  netWeightTons Float
+  grainType     GrainType
+  siloId        String
+  silo          Silo           @relation(fields: [siloId], references: [id])
+  dispatchedAt  DateTime
+  status        DispatchStatus @default(scheduled)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+}
+
+model QualityTest {
+  id            String     @id @default(uuid())
+  moisture      Float
+  protein       Float      @default(0)
+  foreignMatter Float      @default(0)
+  grade         GrainGrade @default(grade_a)
+  siloId        String
+  silo          Silo       @relation(fields: [siloId], references: [id])
+  testedAt      DateTime
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+}
+
+model Contract {
+  id           String         @id @default(uuid())
+  farmerName   String
+  grainType    GrainType
+  quantityTons Float
+  pricePerTon  Float
+  startDate    DateTime
+  endDate      DateTime
+  status       ContractStatus @default(draft)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+}
+
+model Maintenance {
+  id          String            @id @default(uuid())
+  siloId      String
+  silo        Silo              @relation(fields: [siloId], references: [id])
+  type        MaintenanceType
+  scheduledAt DateTime
+  status      MaintenanceStatus @default(scheduled)
+  notes       String            @default("")
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+}

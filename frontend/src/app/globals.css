@@ -1,0 +1,64 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 42 45% 96%;
+    --foreground: 28 50% 16%;
+    --card: 0 0% 100%;
+    --card-foreground: 28 50% 16%;
+    --primary: 38 65% 48%;
+    --primary-foreground: 42 45% 96%;
+    --secondary: 130 25% 49%;
+    --secondary-foreground: 42 45% 96%;
+    --muted: 42 30% 92%;
+    --muted-foreground: 28 20% 40%;
+    --accent: 130 25% 49%;
+    --accent-foreground: 42 45% 96%;
+    --destructive: 0 65% 50%;
+    --destructive-foreground: 0 0% 100%;
+    --success: 130 35% 42%;
+    --success-foreground: 0 0% 100%;
+    --border: 42 25% 85%;
+    --input: 42 25% 85%;
+    --ring: 38 65% 48%;
+    --radius: 0.625rem;
+  }
+  .dark {
+    --background: 28 50% 8%;
+    --foreground: 42 45% 92%;
+    --card: 28 45% 12%;
+    --card-foreground: 42 45% 92%;
+    --primary: 38 65% 52%;
+    --primary-foreground: 28 50% 8%;
+    --secondary: 130 25% 42%;
+    --secondary-foreground: 42 45% 92%;
+    --muted: 28 35% 16%;
+    --muted-foreground: 42 20% 65%;
+    --border: 28 30% 20%;
+    --input: 28 30% 20%;
+    --ring: 38 65% 52%;
+  }
+  * { @apply border-border; }
+  body { @apply bg-background text-foreground antialiased; font-family: var(--font-inter), Inter, system-ui, sans-serif; }
+  h1, h2, h3, h4, .font-display { font-family: var(--font-playfair), 'Playfair Display', Georgia, serif; }
+}
+
+@layer components {
+  .editorial-card { @apply rounded-xl border border-border/70 bg-card shadow-sm transition-shadow hover:shadow-md; }
+  .editorial-hero { @apply relative overflow-hidden bg-grain-pattern; background-color: hsl(var(--background)); }
+  .editorial-hero::before {
+    content: '';
+    @apply absolute inset-0;
+    background: linear-gradient(135deg, rgba(61,41,20,0.93) 0%, rgba(107,143,113,0.35) 55%, rgba(201,146,42,0.18) 100%);
+  }
+  .stat-grid-card { @apply editorial-card p-5; }
+  .data-table { @apply w-full text-sm; }
+  .data-table th { @apply border-b border-border px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground; }
+  .data-table td { @apply border-b border-border/50 px-4 py-3; }
+  .data-table tbody tr:hover { @apply bg-muted/40; }
+  .skeleton { @apply animate-pulse rounded-md bg-muted; }
+  .breadcrumb-bar { @apply border-b border-border/60 bg-muted/30; }
+  .input-field { @apply flex h-10 w-full rounded-lg border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber/40; }
+}

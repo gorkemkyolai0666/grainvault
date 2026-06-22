@@ -1,0 +1,23 @@
+{
+  "projectName": "GrainVault",
+  "designDirection": "Agricultural Editorial Premium",
+  "designTokens": {
+    "projectName": "GrainVault",
+    "designDirection": "Agricultural Editorial Premium",
+    "colors": {
+      "harvestAmber": "#C9922A",
+      "sageGreen": "#6B8F71",
+      "wheatCream": "#F4ECD8",
+      "darkSoilBrown": "#3D2914"
+    },
+    "fonts": {
+      "heading": "Playfair Display",
+      "body": "Inter"
+    },
+    "layout": "top-navigation-with-breadcrumb-bar",
+    "ports": {
+      "frontend": 3630,
+      "backend": 4630
+    }
+  }
+}
